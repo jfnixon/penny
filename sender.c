@@ -21,6 +21,27 @@
  #include "simple_log.h"
  #include "penny_defs.h"
 
+static char msg[4096];      // arbitrary for now
+
+char *create_msg(void)
+{
+    char to_addr[256];      // arbitrary for now
+    char from_addr[256];    // ""
+    char body[4096];        // ""
+
+
+    printf("To: ");
+    scanf(" %s", to_addr);
+    printf("From: ");
+    scanf(" %s", from_addr);
+    printf("Body: ");
+    scanf(" %[^\n]", body);
+
+    sprintf(msg, "To: %s\nFrom: %s\n%s\n", to_addr, from_addr, body);
+    log_debug("\n\n%s\n\n", msg);
+
+    return msg;
+}
 
 
 
@@ -53,8 +74,8 @@
 
     log_debug("Connected, ready to write");
 
-    // Here's the first message
-    msg = "Hello DIME";
+    // Generate a message
+    msg = create_msg();
 
     // Send the mail message
     if (send(sock, msg, strlen(msg), 0) != strlen(msg)) {
